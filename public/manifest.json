@@ -1,0 +1,14 @@
+{
+  "name": "GroupProject",
+  "description": "Extension for managing your tab groups",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  },
+  "background": {
+      "service_worker": "background.js"
+  }
+}
+
