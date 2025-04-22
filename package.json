@@ -1,0 +1,19 @@
+{
+  "name": "groupproject",
+  "version": "1.0.0",
+  "description": "Extension for managing your Chrome extensions.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rmpurp/groupproject.git"
+  },
+  "author": "Ryan Purpura",
+  "license": "GPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/rmpurp/groupproject/issues"
+  },
+  "homepage": "https://github.com/rmpurp/groupproject#readme"
+}
+
