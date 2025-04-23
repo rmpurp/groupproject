@@ -4,6 +4,7 @@
   "description": "Extension for managing your Chrome extensions.",
   "scripts": {
     "build": "tsc && cp public/* dist/",
+    "dev": "nodemon --exec \"npm run build\" --ignore dist/ --ext html,json,png,ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,6 +19,7 @@
   "homepage": "https://github.com/rmpurp/groupproject#readme",
   "devDependencies": {
     "@types/chrome": "^0.0.316",
+    "nodemon": "^3.1.10",
     "typescript": "^5.8.3"
   }
 }
