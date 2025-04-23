@@ -1,4 +1,4 @@
-import { State } from "./model/state.ts";
+import { State } from "./model/state";
 
 const inputField = document.getElementById("input-field") as HTMLInputElement;
 const form = document.getElementById("form") as HTMLFormElement;
