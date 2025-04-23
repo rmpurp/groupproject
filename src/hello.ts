@@ -8,7 +8,7 @@ const tabGroupsList = document.getElementById(
 ) as HTMLDivElement;
 
 function render(state: State): string {
-  return state.filteredTabGroups.map((g) => `<p>${g.displayName}</p>`).join("");
+  return state.sortedTabGroups.map((g) => `<button class="tab-group-button ${g.isTopMatch ? "top-match" : ""} ${g.matchesSelection ? "" : "non-match"}">${g.displayName}</button>`).join("");
 }
 
 const tabGroups = await chrome.tabGroups.query({});
@@ -26,13 +26,19 @@ inputField.addEventListener("input", (async) => {
   tabGroupsList.innerHTML = render(state);
 });
 
+function moveToGroup(tabId: number, groupId: number) {
+  chrome.tabs.group({
+    tabIds: [tabId],
+    groupId: groupId,
+  });
+}
+
 form.addEventListener("submit", (async) => {
-  if (state.activeTabId) {
-    chrome.tabs.group({
-      tabIds: [state.activeTabId],
-      groupId: 928363216,
-    });
+  const topTabGroup = state.topTabGroup?.tabGroupId;
+  if (state.activeTabId && topTabGroup) {
+    moveToGroup(state.activeTabId, topTabGroup);
+    window.close();
   }
 });
 
-export {};
+export { };
