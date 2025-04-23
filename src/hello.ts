@@ -8,7 +8,11 @@ const tabGroupsList = document.getElementById(
 ) as HTMLDivElement;
 
 function render(state: State): string {
-  return state.sortedTabGroups.map((g) => `<button class="tab-group-button ${g.isTopMatch ? "top-match" : ""} ${g.matchesSelection ? "" : "non-match"}">${g.displayName}</button>`).join("");
+  let newGroupButton = "";
+  if (state.offerToCreateNewGroup) {
+    newGroupButton = `<button class="tab-group-button top-match">${state.fieldText} (new group)</button>`
+  }
+  return newGroupButton + state.sortedTabGroups.map((g) => `<button class="tab-group-button ${g.isTopMatch ? "top-match" : ""} ${g.matchesSelection ? "" : "non-match"}">${g.displayName}</button>`).join("");
 }
 
 const tabGroups = await chrome.tabGroups.query({});
@@ -20,25 +24,33 @@ const state = new State(tabGroups, activeTab);
 
 tabGroupsList.innerHTML = render(state);
 
-inputField.addEventListener("input", (async) => {
+inputField.addEventListener("input", () => {
   state.fieldText = inputField.value;
 
   tabGroupsList.innerHTML = render(state);
 });
 
-function moveToGroup(tabId: number, groupId: number) {
-  chrome.tabs.group({
+async function moveToGroup(tabId: number, groupId?: number): Promise<number> {
+  return await chrome.tabs.group({
     tabIds: [tabId],
     groupId: groupId,
   });
 }
 
-form.addEventListener("submit", (async) => {
-  const topTabGroup = state.topTabGroup?.tabGroupId;
-  if (state.activeTabId && topTabGroup) {
-    moveToGroup(state.activeTabId, topTabGroup);
-    window.close();
+form.addEventListener("submit", async () => {
+  if (state.activeTabId) {
+    if (state.offerToCreateNewGroup) {
+      const group = await moveToGroup(state.activeTabId);
+      chrome.tabGroups.update(group, { title: state.fieldText })
+    } else {
+      const topTabGroup = state.topTabGroup?.tabGroupId;
+      if (topTabGroup) {
+        await moveToGroup(state.activeTabId, topTabGroup);
+      }
+    }
   }
+
+  window.close();
 });
 
 export { };

@@ -4,7 +4,7 @@ export class State {
   constructor(
     private tabGroups: chrome.tabGroups.TabGroup[],
     private activeTab: chrome.tabs.Tab | undefined,
-    public fieldText: string = ""
+    public fieldText: string = "",
   ) { }
 
   public get sortedTabGroups(): TabGroupViewModel[] {
@@ -32,5 +32,9 @@ export class State {
 
   public get activeTabId(): number | undefined {
     return this.activeTab?.id;
+  }
+
+  public get offerToCreateNewGroup(): boolean {
+    return !!this.fieldText && (this.sortedTabGroups.length === 0 || !this.sortedTabGroups[0].matchesSelection);
   }
 }
