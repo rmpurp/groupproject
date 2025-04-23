@@ -1,4 +1,5 @@
-const echoSpan = document.getElementById("echo-span") as HTMLSpanElement;
+import { State } from "./model/state.ts";
+
 const inputField = document.getElementById("input-field") as HTMLInputElement;
 const form = document.getElementById("form") as HTMLFormElement;
 
@@ -6,55 +7,29 @@ const tabGroupsList = document.getElementById(
   "tab-groups-list"
 ) as HTMLDivElement;
 
-class TabGroup {
-  constructor(readonly title: string, readonly id: number) {}
-
-  get displayName(): string {
-    if (this.title) {
-      return this.title;
-    }
-
-    return "" + this.id;
-  }
-
-  toHtml(): string {
-    return `<p>${this.displayName}</p>`;
-  }
-
-  static fromResponse(model: chrome.tabGroups.TabGroup) {
-    return new TabGroup(model.title ?? "", model.id);
-  }
+function render(state: State): string {
+  return state.filteredTabGroups.map((g) => `<p>${g.displayName}</p>`).join("");
 }
 
-function renderTabGroups(tabGroups: TabGroup[], prefix: string): string {
-  prefix = prefix.toLowerCase();
-  return tabGroups
-    .filter((group) => group.displayName.toLowerCase().startsWith(prefix))
-    .map((group) => group.toHtml())
-    .join("");
-}
+const tabGroups = await chrome.tabGroups.query({});
+console.log(tabGroups.length);
+let queryOptions = { active: true, lastFocusedWindow: true };
+let [activeTab] = await chrome.tabs.query(queryOptions);
 
-const tabGroupsResponse = await chrome.tabGroups.query({});
-const tabGroups = tabGroupsResponse.map((model) =>
-  TabGroup.fromResponse(model)
-);
+const state = new State(tabGroups, activeTab);
 
-tabGroupsList.innerHTML = renderTabGroups(tabGroups, "");
+tabGroupsList.innerHTML = render(state);
 
-inputField.addEventListener("input", (event) => {
-  echoSpan.innerText = inputField.value;
-  tabGroupsList.innerHTML = renderTabGroups(tabGroups, inputField.value);
+inputField.addEventListener("input", (async) => {
+  state.fieldText = inputField.value;
+
+  tabGroupsList.innerHTML = render(state);
 });
 
-form.addEventListener("submit", async (event) => {
-  let queryOptions = { active: true, lastFocusedWindow: true };
-  // `tab` will either be a `tabs.Tab` instance or `undefined`.
-  let [tab] = await chrome.tabs.query(queryOptions);
-
-  console.log("HERE!");
-  if (tab?.id) {
+form.addEventListener("submit", (async) => {
+  if (state.activeTabId) {
     chrome.tabs.group({
-      tabIds: [tab?.id],
+      tabIds: [state.activeTabId],
       groupId: 928363216,
     });
   }
