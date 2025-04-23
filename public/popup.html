@@ -1,20 +1,17 @@
 <html>
+  <head>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
 
-<head>
-  <link rel="stylesheet" href="styles.css">
-</head>
+  <body>
+    <h1>GroupProject</h1>
+    <div id="root"></div>
+    <form id="form">
+      <input type="text" autofocus id="input-field" autocomplete="off" />
+      <button type="submit" hidden="true">Submit</button>
+    </form>
+    <div id="tab-groups-list"></div>
 
-<body>
-  <h1>GroupProject</h1>
-  <div id="root"></div>
-  <form id="form">
-    <input type="text" autofocus id="input-field" autocomplete="off">
-    <button type="submit" hidden="true">Submit</button>
-  </form>
-  <div id="tab-groups-list">
-  </div>
-
-  <script src="./popup.js" type="module"></script>
-</body>
-
+    <script src="./popup.js" type="module"></script>
+  </body>
 </html>

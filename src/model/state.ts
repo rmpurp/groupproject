@@ -5,7 +5,7 @@ export class State {
     private tabGroups: chrome.tabGroups.TabGroup[],
     private activeTab: chrome.tabs.Tab | undefined,
     public fieldText: string = "",
-  ) { }
+  ) {}
 
   public get sortedTabGroups(): TabGroupViewModel[] {
     const text = this.fieldText.toLowerCase();
@@ -23,7 +23,7 @@ export class State {
       concatenated[0].isTopMatch = true;
     }
 
-    return concatenated
+    return concatenated;
   }
 
   public get topTabGroup(): TabGroupViewModel | undefined {
@@ -35,6 +35,10 @@ export class State {
   }
 
   public get offerToCreateNewGroup(): boolean {
-    return !!this.fieldText && (this.sortedTabGroups.length === 0 || !this.sortedTabGroups[0].matchesSelection);
+    return (
+      !!this.fieldText &&
+      (this.sortedTabGroups.length === 0 ||
+        !this.sortedTabGroups[0].matchesSelection)
+    );
   }
 }

@@ -1,25 +1,25 @@
 .tab-group-button {
-    width: 100%;
-    border-radius: 8px;
-    padding: 8px;
-    margin: 4px 0;
-    background-color: rgb(120, 161, 199);
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.5s ease;
-    box-sizing: border-box;
+  width: 100%;
+  border-radius: 8px;
+  padding: 8px;
+  margin: 4px 0;
+  background-color: rgb(120, 161, 199);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+  box-sizing: border-box;
 }
 
 .tab-group-button.top-match {
-    background-color: rgb(144, 192, 237);
-    border: 4px solid #a8c2cd;
+  background-color: rgb(144, 192, 237);
+  border: 4px solid #a8c2cd;
 }
 
 .tab-group-button.non-match {
-    background-color: rgb(78, 78, 78);
+  background-color: rgb(78, 78, 78);
 }
 
 .tab-group-button:hover {
-    background-color: rgb(78, 141, 160);
-    /* darker blue on hover */
+  background-color: rgb(78, 141, 160);
+  /* darker blue on hover */
 }

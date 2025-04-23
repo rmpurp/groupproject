@@ -1,20 +1,28 @@
 import { State } from "./model/state";
-import { createRoot } from 'react-dom/client';
+import { createRoot } from "react-dom/client";
 import { App } from "./view/root";
 
 const inputField = document.getElementById("input-field") as HTMLInputElement;
 const form = document.getElementById("form") as HTMLFormElement;
 
 const tabGroupsList = document.getElementById(
-  "tab-groups-list"
+  "tab-groups-list",
 ) as HTMLDivElement;
 
 function render(state: State): string {
   let newGroupButton = "";
   if (state.offerToCreateNewGroup) {
-    newGroupButton = `<button class="tab-group-button top-match">${state.fieldText} (new group)</button>`
+    newGroupButton = `<button class="tab-group-button top-match">${state.fieldText} (new group)</button>`;
   }
-  return newGroupButton + state.sortedTabGroups.map((g) => `<button class="tab-group-button ${g.isTopMatch ? "top-match" : ""} ${g.matchesSelection ? "" : "non-match"}">${g.displayName}</button>`).join("");
+  return (
+    newGroupButton +
+    state.sortedTabGroups
+      .map(
+        (g) =>
+          `<button class="tab-group-button ${g.isTopMatch ? "top-match" : ""} ${g.matchesSelection ? "" : "non-match"}">${g.displayName}</button>`,
+      )
+      .join("")
+  );
 }
 
 const tabGroups = await chrome.tabGroups.query({});
@@ -33,17 +41,14 @@ inputField.addEventListener("input", () => {
 });
 
 async function moveToGroup(tabId: number, groupId?: number): Promise<number> {
-  return await chrome.tabs.group({
-    tabIds: [tabId],
-    groupId: groupId,
-  });
+  return await chrome.tabs.group({ tabIds: [tabId], groupId: groupId });
 }
 
 form.addEventListener("submit", async () => {
   if (state.activeTabId) {
     if (state.offerToCreateNewGroup) {
       const group = await moveToGroup(state.activeTabId);
-      chrome.tabGroups.update(group, { title: state.fieldText })
+      chrome.tabGroups.update(group, { title: state.fieldText });
     } else {
       const topTabGroup = state.topTabGroup?.tabGroupId;
       if (topTabGroup) {
@@ -55,9 +60,9 @@ form.addEventListener("submit", async () => {
   window.close();
 });
 
-export { };
+export {};
 
-const container = document.getElementById('root');
+const container = document.getElementById("root");
 
 if (!container) {
   throw new Error("Missing root");

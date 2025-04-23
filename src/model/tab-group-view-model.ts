@@ -1,5 +1,9 @@
 export class TabGroupViewModel {
-  constructor(private tabGroup: chrome.tabGroups.TabGroup, readonly matchesSelection: boolean, public isTopMatch: boolean) { }
+  constructor(
+    private tabGroup: chrome.tabGroups.TabGroup,
+    readonly matchesSelection: boolean,
+    public isTopMatch: boolean,
+  ) {}
 
   get displayName(): string {
     if (this.tabGroup.title) {
