@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Extension for managing your Chrome extensions.",
   "scripts": {
-    "build": "tsc && cp public/* dist/",
-    "dev": "nodemon --exec \"npm run build || exit 1\" --ignore dist/ --ext html,json,png,ts,css",
+    "build": "node build.mjs",
+    "dev": "nodemon --watch src --watch public --ext ts,tsx,css,html --exec \"node build.mjs || exit 1\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,7 +19,14 @@
   "homepage": "https://github.com/rmpurp/groupproject#readme",
   "devDependencies": {
     "@types/chrome": "^0.0.316",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "esbuild": "^0.25.3",
     "nodemon": "^3.1.10",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   }
 }

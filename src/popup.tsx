@@ -1,4 +1,6 @@
 import { State } from "./model/state";
+import { createRoot } from 'react-dom/client';
+import { App } from "./view/root";
 
 const inputField = document.getElementById("input-field") as HTMLInputElement;
 const form = document.getElementById("form") as HTMLFormElement;
@@ -54,3 +56,12 @@ form.addEventListener("submit", async () => {
 });
 
 export { };
+
+const container = document.getElementById('root');
+
+if (!container) {
+  throw new Error("Missing root");
+}
+
+const root = createRoot(container);
+root.render(<App />);

@@ -1,4 +1,4 @@
-import { TabGroupViewModel } from "./tab-group-view-model.ts";
+import { TabGroupViewModel } from "./tab-group-view-model";
 
 export class State {
   constructor(
