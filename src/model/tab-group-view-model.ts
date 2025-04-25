@@ -15,4 +15,17 @@ export class TabGroupViewModel {
   get tabGroupId(): number {
     return this.tabGroup.id;
   }
+
+  get classes(): string {
+    const classes = ["tab-group-button"];
+    if (this.isTopMatch) {
+      classes.push("top-match");
+    }
+
+    if (!this.matchesSelection) {
+      classes.push("non-match");
+    }
+
+    return classes.join(" ");
+  }
 }
