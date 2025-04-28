@@ -1,8 +1,6 @@
-import { useState } from "react";
 import { State as AppViewModel } from "../model/state";
 import { TabGroupList } from "./tab-group-list";
-import { useFetchTabGroups } from "./hooks/use-fetch-tab-groups";
-import { useActiveTab } from "./hooks/use-active-tab";
+import { useAppState } from "./hooks/use-app-state";
 
 const moveToGroup = async (
   tabId: number,
@@ -12,12 +10,14 @@ const moveToGroup = async (
 };
 
 export const TabGroupSelector = () => {
-  const [fieldText, setFieldText] = useState("");
+  const { state, updateFieldText } = useAppState();
 
-  const tabGroups = useFetchTabGroups();
-  const activeTab = useActiveTab();
-
-  const viewModel = new AppViewModel(tabGroups, activeTab, fieldText);
+  // Todo: Don't expose internal typings. Only expose view model
+  const viewModel = new AppViewModel(
+    state.tabGroups,
+    state.activeTab,
+    state.fieldText,
+  );
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // prevent page refresh
@@ -41,8 +41,8 @@ export const TabGroupSelector = () => {
         <input
           type="text"
           id="input-field"
-          value={fieldText}
-          onChange={(e) => setFieldText(e.target.value)}
+          value={state.fieldText}
+          onChange={(e) => updateFieldText(e.target.value)}
           autoFocus={true}
           autoComplete="off"
           style={{ padding: "0.5rem", fontSize: "1rem" }}
