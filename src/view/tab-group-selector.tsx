@@ -1,4 +1,3 @@
-import { State as AppViewModel } from "../model/state";
 import { TabGroupList } from "./tab-group-list";
 import { useAppState } from "./hooks/use-app-state";
 
@@ -10,18 +9,12 @@ const moveToGroup = async (
 };
 
 export const TabGroupSelector = () => {
-  const { state, updateFieldText } = useAppState();
-
-  // Todo: Don't expose internal typings. Only expose view model
-  const viewModel = new AppViewModel(
-    state.tabGroups,
-    state.activeTab,
-    state.fieldText,
-  );
+  const { viewModel, updateFieldText } = useAppState();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // prevent page refresh
 
+    // TODO: fix this leaky abstraction
     if (viewModel.offerToCreateNewGroup) {
       const groupId = await moveToGroup(viewModel.activeTabId!, undefined);
 
@@ -41,7 +34,7 @@ export const TabGroupSelector = () => {
         <input
           type="text"
           id="input-field"
-          value={state.fieldText}
+          value={viewModel.fieldText}
           onChange={(e) => updateFieldText(e.target.value)}
           autoFocus={true}
           autoComplete="off"

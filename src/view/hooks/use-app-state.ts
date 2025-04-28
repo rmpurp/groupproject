@@ -1,6 +1,7 @@
 import { useEffect, useReducer } from "react";
+import { AppViewModel } from "../../model/state";
 
-export interface AppState {
+interface AppState {
   fieldText: string;
   tabGroups: chrome.tabGroups.TabGroup[];
   activeTab: chrome.tabs.Tab | undefined;
@@ -27,7 +28,7 @@ const reducer = (state: AppState, action: Action): AppState => {
 };
 
 export interface UseAppStateContext {
-  state: AppState;
+  viewModel: AppViewModel;
   updateFieldText: (fieldText: string) => void;
 }
 
@@ -66,5 +67,12 @@ export const useAppState = (): UseAppStateContext => {
   const updateFieldText = (fieldText: string) =>
     dispatch({ type: "update-field-text", updatedFieldText: fieldText });
 
-  return { state, updateFieldText };
+  return {
+    viewModel: new AppViewModel(
+      state.tabGroups,
+      state.activeTab,
+      state.fieldText,
+    ),
+    updateFieldText,
+  };
 };

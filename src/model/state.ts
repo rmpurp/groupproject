@@ -1,6 +1,6 @@
 import { TabGroupViewModel } from "./tab-group-view-model";
 
-export class State {
+export class AppViewModel {
   constructor(
     private tabGroups: chrome.tabGroups.TabGroup[],
     private activeTab: chrome.tabs.Tab | undefined,
